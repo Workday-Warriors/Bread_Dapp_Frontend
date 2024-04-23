@@ -53,7 +53,7 @@ export const CLaimAirdrop = ({ setOpen }: Props) => {
         >
           {isConnected ? 'CLAIM NOT YET STARTS' : 'CONNECT WALLET'}
         </button>
-        <div className='bg-[#303030] pt-[31px] mt-[83px] px-[21px] xl:px-[34px]'>
+        <div className='bg-[#303030] py-[31px] mt-[83px] px-[21px] xl:px-[34px] '>
           <div className='grid grid-cols-4 md:grid-cols-3 pb-[33px]'>
             <div className='text-white col-span-2 md:col-span-1 text-[12.072px] xl:text-xl not-italic font-normal leading-[normal]'>
               LEADERBOARD
