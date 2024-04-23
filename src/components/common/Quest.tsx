@@ -70,7 +70,7 @@ export const Quest = ({
                   <button
                     className={cn(
                       'relative  transition-all duration-300 text-white  text-[12.5px] font-normal z-10 leading-[15px] text-center bg-[#303030]  w-[26px] h-[25px]',
-                      `${item.done ? 'bg-[#001AFF]' : ''}`
+                      `${!item.done ? 'bg-[#001AFF]' : ''}`
                     )}
                   >
                     {index + 1}
