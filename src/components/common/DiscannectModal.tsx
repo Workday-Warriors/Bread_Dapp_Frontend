@@ -30,10 +30,7 @@ export const DisconnectModal = ({ open, close }: Props) => {
             DISCONNECT WALLET
           </p>
         </div>
-        <button
-          onClick={close}
-          className='absolute top-[18px] w-[18px] h-[18px] right-[20px] '
-        >
+        <button onClick={close} className='absolute top-[18px] right-[20px]'>
           <CricleXIcon />
         </button>
       </div>
