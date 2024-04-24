@@ -1,18 +1,40 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Quest } from './common'
 
 export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
+  const [discord, setDiscord] = useState(() =>
+    Boolean(localStorage.getItem('discord'))
+  )
   const { isConnected } = useAccount()
   const handleLogin = () => {
     if (!localStorage.getItem('discord')) {
-      window.location.href = `Discord Auth URL`
+      window.location.href = `https://discord.com/oauth2/authorize?client_id=1232682981869621288&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fjoin_quest&scope=identify`
     }
   }
   const handleConnect = () => {
     if (!isConnected) {
       setOpen(true)
     }
+  }
+  const TWITTER_CLIENT_ID = 'cGRXRDZCaXFoX29WZVVjTzNjcUo6MTpjaQ' // give your twitter client id here
+
+  // twitter oauth Url constructor
+  function getTwitterOauthUrl() {
+    const rootUrl = 'https://twitter.com/i/oauth2/authorize'
+    const options = {
+      redirect_uri: 'http://www.localhost:5731/join_quest', // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
+      client_id: TWITTER_CLIENT_ID,
+      state: 'state',
+      response_type: 'code',
+      code_challenge: 'y_SfRG4BmOES02uqWeIkIgLQAlTBggyf_G7uKT51ku8',
+      code_challenge_method: 'S256',
+      scope: ['users.read', 'tweet.read', 'follows.read', 'follows.write'].join(
+        ' '
+      ), // add/remove scopes as needed
+    }
+    const qs = new URLSearchParams(options).toString()
+    return `${rootUrl}?${qs}`
   }
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
@@ -24,16 +46,17 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-          client_id: 'DISCORD_CLIENT_ID',
-          client_secret: 'DISCORD_CLIENT_SECRET',
+          client_id: '1232682981869621288',
+          client_secret: 'i7FBRXsOj53vEIeKlD97daA5vRd8oRTD',
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: 'DISCORD_REDIRECT_URI',
+          redirect_uri: 'https://bree2.vercel.app/about',
         }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (data?.access_token) {
+            setDiscord(true)
             localStorage.setItem('discord', data?.access_token)
           }
         })
@@ -61,22 +84,24 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
                 { done: false, type: 'connect-wallet' },
               ]}
             />
-            <Quest
+            <a href={getTwitterOauthUrl()}>Twitter auth</a>
+            {/* <Quest
               title='CONNECT TWITTER'
+              onClick={getTwitterOauthUrl}
               subtitle='Connect your Twitter account and follow @bread-onbase.'
               steps={[
                 { done: false, type: 'connect-wallet' },
                 { done: false, type: 'connect-wallet' },
               ]}
-            />
+            /> */}
             <Quest
               onClick={handleLogin}
               title='CONNECT DISCORD'
-              isDone={Boolean(localStorage.getItem('discord'))}
+              isDone={discord}
               subtitle='Connect your Discord account and join @breadonbase channel.'
               steps={[
                 {
-                  done: Boolean(localStorage.getItem('discord')),
+                  done: discord,
                   type: 'connect-wallet',
                 },
                 { done: false, type: 'connect-wallet' },
