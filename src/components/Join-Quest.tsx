@@ -23,7 +23,7 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
   function getTwitterOauthUrl() {
     const rootUrl = 'https://twitter.com/i/oauth2/authorize'
     const options = {
-      redirect_uri: 'http://www.localhost:5731/join_quest', // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
+      redirect_uri: 'https://bree2.vercel.app/about', // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
       client_id: TWITTER_CLIENT_ID,
       state: 'state',
       response_type: 'code',
