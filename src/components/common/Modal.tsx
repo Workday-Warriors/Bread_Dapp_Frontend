@@ -29,7 +29,7 @@ export const Modal = ({ open, close }: Props) => {
           .map((connector, index) => (
             <div
               key={index}
-              className='bg-[#1E1E1E] text-white py-[27px] px-[21px] cursor-pointer gap-x-[25px] flex items-center mt-2.5'
+              className='bg-[#1E1E1E] hover:bg-white hover:text-gray-500 text-white py-[27px] px-[21px] cursor-pointer gap-x-[25px] flex items-center mt-2.5 transition-all duration-300'
               onClick={() => connectWallet(connector, chains[0].id)}
             >
               <img className='w-[37px] h-[37px]' src={imgs[index]} alt='' />

@@ -43,7 +43,7 @@ export const Header = ({ open, setOpen }: Props) => {
         </div>
       </div>
       <h1 className='text-[18.37px] mt-[44px] xl:mt-0 xl:text-3xl font-normal leading-9 text-center text-white px-[18px]'>
-        MINT BREAD NFT AND CLAIM 2X AIRDROP
+        MINT BAKER NFT AND CLAIM 2X AIRDROP
       </h1>
       {!isConnected ? (
         <Modal open={open} close={() => setOpen(false)} />

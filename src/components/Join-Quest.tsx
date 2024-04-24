@@ -1,12 +1,19 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Quest } from './common'
+import { getTwitterOauthUrl } from '../utils'
 
 export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
+  const [discord, setDiscord] = useState(() =>
+    Boolean(localStorage.getItem('discord'))
+  )
+  const [twitter, setTwitter] = useState(() =>
+    Boolean(localStorage.getItem('twitter'))
+  )
   const { isConnected } = useAccount()
   const handleLogin = () => {
     if (!localStorage.getItem('discord')) {
-      window.location.href = `Discord Auth URL`
+      window.location.href = `https://discord.com/oauth2/authorize?client_id=1232682981869621288&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2Fjoin_quest&scope=identify`
     }
   }
   const handleConnect = () => {
@@ -14,6 +21,7 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
       setOpen(true)
     }
   }
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
@@ -24,16 +32,17 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-          client_id: 'DISCORD_CLIENT_ID',
-          client_secret: 'DISCORD_CLIENT_SECRET',
+          client_id: '1232682981869621288',
+          client_secret: 'i7FBRXsOj53vEIeKlD97daA5vRd8oRTD',
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: 'DISCORD_REDIRECT_URI',
+          redirect_uri: 'http://localhost:5173/join_quest',
         }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (data?.access_token) {
+            setDiscord(true)
             localStorage.setItem('discord', data?.access_token)
           }
         })
@@ -41,6 +50,23 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
           console.error('Error:', error)
         })
     }
+  }, [])
+
+  useEffect(() => {
+    const getParamsFromUrl = () => {
+      const queryParams = new URLSearchParams(window.location.search)
+      const code = queryParams.get('code')
+      if (code) {
+        localStorage.setItem('twitter', code)
+        setTwitter(true)
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        )
+      }
+    }
+    getParamsFromUrl()
   }, [])
 
   return (
@@ -61,22 +87,26 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
                 { done: false, type: 'connect-wallet' },
               ]}
             />
+
             <Quest
+              isTwitter
               title='CONNECT TWITTER'
+              onClick={getTwitterOauthUrl}
+              isDone={twitter}
               subtitle='Connect your Twitter account and follow @bread-onbase.'
               steps={[
-                { done: false, type: 'connect-wallet' },
+                { done: twitter, type: 'connect-wallet' },
                 { done: false, type: 'connect-wallet' },
               ]}
             />
             <Quest
               onClick={handleLogin}
               title='CONNECT DISCORD'
-              isDone={Boolean(localStorage.getItem('discord'))}
+              isDone={discord}
               subtitle='Connect your Discord account and join @breadonbase channel.'
               steps={[
                 {
-                  done: Boolean(localStorage.getItem('discord')),
+                  done: discord,
                   type: 'connect-wallet',
                 },
                 { done: false, type: 'connect-wallet' },
