@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Quest } from './common'
+import { getTwitterOauthUrl } from '../utils'
 
 export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
   const [discord, setDiscord] = useState(() =>
     Boolean(localStorage.getItem('discord'))
+  )
+  const [twitter, setTwitter] = useState(() =>
+    Boolean(localStorage.getItem('twitter'))
   )
   const { isConnected } = useAccount()
   const handleLogin = () => {
@@ -17,25 +21,7 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
       setOpen(true)
     }
   }
-  const TWITTER_CLIENT_ID = 'cGRXRDZCaXFoX29WZVVjTzNjcUo6MTpjaQ' // give your twitter client id here
 
-  // twitter oauth Url constructor
-  function getTwitterOauthUrl() {
-    const rootUrl = 'https://twitter.com/i/oauth2/authorize'
-    const options = {
-      redirect_uri: 'https://bree2.vercel.app/about', // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
-      client_id: TWITTER_CLIENT_ID,
-      state: 'state',
-      response_type: 'code',
-      code_challenge: 'y_SfRG4BmOES02uqWeIkIgLQAlTBggyf_G7uKT51ku8',
-      code_challenge_method: 'S256',
-      scope: ['users.read', 'tweet.read', 'follows.read', 'follows.write'].join(
-        ' '
-      ), // add/remove scopes as needed
-    }
-    const qs = new URLSearchParams(options).toString()
-    return `${rootUrl}?${qs}`
-  }
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
@@ -50,7 +36,7 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
           client_secret: 'i7FBRXsOj53vEIeKlD97daA5vRd8oRTD',
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: 'https://bree2.vercel.app/about',
+          redirect_uri: 'http://localhost:5173/join_quest',
         }),
       })
         .then((response) => response.json())
@@ -64,6 +50,23 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
           console.error('Error:', error)
         })
     }
+  }, [])
+
+  useEffect(() => {
+    const getParamsFromUrl = () => {
+      const queryParams = new URLSearchParams(window.location.search)
+      const code = queryParams.get('code')
+      if (code) {
+        localStorage.setItem('twitter', code)
+        setTwitter(true)
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        )
+      }
+    }
+    getParamsFromUrl()
   }, [])
 
   return (
@@ -84,16 +87,18 @@ export const JoinQuest = ({ setOpen }: { setOpen: (e: boolean) => void }) => {
                 { done: false, type: 'connect-wallet' },
               ]}
             />
-            <a href={getTwitterOauthUrl()}>Twitter auth</a>
-            {/* <Quest
+
+            <Quest
+              isTwitter
               title='CONNECT TWITTER'
               onClick={getTwitterOauthUrl}
+              isDone={twitter}
               subtitle='Connect your Twitter account and follow @bread-onbase.'
               steps={[
-                { done: false, type: 'connect-wallet' },
+                { done: twitter, type: 'connect-wallet' },
                 { done: false, type: 'connect-wallet' },
               ]}
-            /> */}
+            />
             <Quest
               onClick={handleLogin}
               title='CONNECT DISCORD'

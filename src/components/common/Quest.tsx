@@ -11,9 +11,10 @@ interface Props {
   title: string
   subtitle: string
   isCopyBtn?: boolean
-  onClick?: () => void
+  onClick?: () => void | string
   isDone?: boolean
   steps?: Step[]
+  isTwitter?: boolean
 }
 
 export const Quest = ({
@@ -23,6 +24,7 @@ export const Quest = ({
   onClick,
   isDone,
   steps,
+  isTwitter,
 }: Props) => {
   return (
     <div className='bg-[#1E1E1E] z-[11] pl-[28px] xl:pl-[34px] pt-[41px] pb-[24px] flex  flex-col xl:flex-row justify-between pr-[37px]'>
@@ -36,23 +38,35 @@ export const Quest = ({
       </div>
       <div className=' flex flex-col items-start xl:items-end justify-around'>
         <div className={`  relative ${isCopyBtn ? 'w-auto xl:w-[432px]' : ''}`}>
-          <button
-            onClick={onClick}
-            className={`relative custom_hover transition-all duration-300 max-w-full hover:bg-white hover:text-[#001AFF] line-clamp-1 flex items-center gap-2 bg-[#001AFF] z-[2] pt-[17px] px-[28px] text-white pb-[14px] text-xl font-normal leading-6 text-center ${
-              isDone ? 'bg-[#303030]' : ' '
-            }`}
-          >
-            {isCopyBtn ? (
-              <span className=' hidden xl:inline-block line-clamp-1 w-full text-[15px] italic font-normal leading-[18px] text-left'>
-                https://breadonbase/quest/?referral=840oa4yi
-              </span>
-            ) : isDone ? (
-              'Done'
-            ) : (
-              ' CONNECT'
-            )}
-            {isCopyBtn ? <CopyIcon /> : ''}
-          </button>
+          {isTwitter ? (
+            <a
+              href={onClick ? (onClick() as string) : ''}
+              className={`relative custom_hover transition-all duration-300 max-w-full hover:bg-white hover:text-[#001AFF] line-clamp-1 flex items-center gap-2 bg-[#001AFF] z-[2] pt-[17px] px-[28px] text-white pb-[14px] text-xl font-normal leading-6 text-center ${
+                isDone ? 'bg-[#303030]' : ' '
+              }`}
+            >
+              {isDone ? 'Done' : ' CONNECT'}
+            </a>
+          ) : (
+            <button
+              onClick={onClick}
+              className={`relative custom_hover transition-all duration-300 max-w-full hover:bg-white hover:text-[#001AFF] line-clamp-1 flex items-center gap-2 bg-[#001AFF] z-[2] pt-[17px] px-[28px] text-white pb-[14px] text-xl font-normal leading-6 text-center ${
+                isDone ? 'bg-[#303030]' : ' '
+              }`}
+            >
+              {isCopyBtn ? (
+                <span className=' hidden xl:inline-block line-clamp-1 w-full text-[15px] italic font-normal leading-[18px] text-left'>
+                  https://breadonbase/quest/?referral=840oa4yi
+                </span>
+              ) : isDone ? (
+                'Done'
+              ) : (
+                ' CONNECT'
+              )}
+              {isCopyBtn ? <CopyIcon /> : ''}
+            </button>
+          )}
+
           <span className='absolute transition-all duration-300 group-hover:bg-gray-500 w-full z-[1] bottom-[-5px] right-[-5px] h-full bg-white'></span>
         </div>
         {isCopyBtn ? (
