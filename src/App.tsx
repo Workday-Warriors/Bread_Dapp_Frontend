@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { Header } from './components/Header'
+import { Navbar } from './components/Navbar'
+import { About, CLaimAirdrop, EmptyPage } from './pages'
+import { Footer, JoinQuest } from './components'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+import 'aos/dist/aos.css'
+import { useState } from 'react'
+AOS.init({ duration: 1500 })
 
-function App() {
+export const App = () => {
+  const [open, setOpen] = useState(false)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <Header open={open} setOpen={setOpen} />
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Navigate to='/about' />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/join_quest' element={<JoinQuest setOpen={setOpen} />} />
+        <Route
+          path='/claim_airdrop'
+          element={<CLaimAirdrop setOpen={setOpen} />}
+        />
+        <Route path='mint_bread_nft' element={<EmptyPage />} />
+      </Routes>
+      <Footer />
+    </>
+  )
 }
-
-export default App;
