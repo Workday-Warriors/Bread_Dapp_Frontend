@@ -12,7 +12,7 @@ export const NAVBAR = [
     path: '/claim_airdrop',
   },
   {
-    label: 'MINT BREAD NFT',
+    label: 'MINT BAKER NFT',
     path: '/mint_bread_nft',
   },
 ]

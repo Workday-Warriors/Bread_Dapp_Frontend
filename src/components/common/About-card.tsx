@@ -6,10 +6,10 @@ export const AboutCard = () => {
           LOOOOOAF DE DOUGH
         </h1>
         <p className='text-white  mt-[41px] mb-[58px] max-w-[276.11px] xl:max-w-[460px] text-[13.21px] xl:text-lg font-normal leading-[15.85px]  xl:leading-[21.6px] text-center'>
-          $BREAD is Powered by 10,000 collectible bread characters living on
+          $BREAD is Powered by 10,000 collectible bakers characters living on
           base chain. Rising from obscurity to make its mark in the world of
           memes and digital collectibles, an airdrop is baked, raining down on
-          the happy $BREAD early community, with a 2x Airdrop for $BREAD NFT
+          the happy $BREAD early community, with a 2x Airdrop for $BAKER NFT
           holders! Uniting a community bound by their love for bread, memes, and
           the promise of a decentralized future.
         </p>

@@ -1,18 +1,18 @@
 export const FOOTER = [
   {
     label: 'BUY $BREAD',
-    path: '',
+    path: 'https://app.uniswap.org/?chain=base',
   },
   {
     label: 'TWITTER',
-    path: '',
+    path: 'https://twitter.com/bread_onbase',
   },
   {
     label: 'DISCORD',
-    path: '',
+    path: 'https://discord.gg/FGpmvCGRPT',
   },
   {
     label: 'OPENSEA',
-    path: '',
+    path: 'https://opensea.io/',
   },
 ]

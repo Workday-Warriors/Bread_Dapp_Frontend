@@ -45,9 +45,14 @@ export const Breadnomics = () => {
             </h4>
             <p
               data-aos='fade-up'
-              className='text-[10px] md:text-[14px] w-full xl:text-xl text-white font-normal leading-6 mt-[11px] text-center'
+              className='text-[10px] md:text-[14px] w-full xl:text-xl text-white font-normal leading-6 mt-[11px] text-center cursor-pointer'
+              onClick={() =>
+                window.open(
+                  'https://basescan.org/token/0x6E0F01B118e34311680353e5febaa11e706cb7bf'
+                )
+              }
             >
-              0x06785B956e25530e6BFD8E9a494517E14989520D
+              0x6E0F01B118e34311680353e5febaa11e706cb7bf
             </p>
           </div>
         </div>

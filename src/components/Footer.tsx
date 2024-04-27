@@ -10,6 +10,7 @@ export const Footer = () => (
             key={index}
             to={link.path}
             className='mt-1 hover:text-[#FFDF36] transition-all duration-300'
+            target='_blank'
           >
             {link.label}
           </Link>
